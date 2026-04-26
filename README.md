@@ -47,9 +47,11 @@ Comprobamos  que curl está instalado.
 <h4>Pregunta</h4>
 
 ¿Qué comando permite ver las capas de una imagen Docker?
-El comando es 
+<br>
 docker history [nombre_imagen] 
+<br>
 En nuestro caso 
+<br>
 docker history mi-ubuntu
 
 
