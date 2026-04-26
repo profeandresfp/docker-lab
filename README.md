@@ -49,9 +49,63 @@ Comprobamos  que curl está instalado.
 ¿Qué comando permite ver las capas de una imagen Docker?
 <br>
 docker history [nombre_imagen] 
+
+docker run -d  --name postgres-demo -e POSTGRES_PASSWORD=123 -v postgres-vol:/var/lib/postgresql/ postgres
+
 <br>
 En nuestro caso 
 <br>
 docker history mi-ubuntu
+
+<h3>Paso 3</h3>
+
+docker run -d  --name postgres-demo -e POSTGRES_PASSWORD=123 -v postgres-vol:/var/lib/postgresql/ postgres
+
+<h3>Paso 3</h3>
+Volúmenes persistentes
+
+Vamos a ejecutar un contenedor de postgres que use un volumen Docker montado en /var/lib/postgresql/data.
+
+En este caso vamos a crear el volumen a la vez que ejecutamos el contenedor.
+Además la ruta del volumen en el contenedor la he tenido que cambiar por un cambio reciente en la versión de postgre
+
+docker run -d  --name postgres-demo -e POSTGRES_PASSWORD=123 -v postgres-vol:/var/lib/postgresql/ postgres
+
+<img width="1893" height="48" alt="3_Captura de pantalla_2026-04-26_11-53-13" src="https://github.com/user-attachments/assets/c4937ac3-31a2-42fa-a6d7-94a45f0424bb" />
+
+Ahora vamos a conectarnos a la base de datos del contenedor
+
+<img width="1089" height="88" alt="3_Captura de pantalla_2026-04-26_11-56-12" src="https://github.com/user-attachments/assets/edf15ef6-a334-49e4-959f-8513c461e188" />
+
+Ahora crearemos una tabla que se almacenara en el volumen
+
+<img width="727" height="137" alt="3_Captura de pantalla_2026-04-26_12-00-25" src="https://github.com/user-attachments/assets/68d6d994-ed08-40c4-81f4-bbe440ff180d" />
+
+Insertamos un registro:
+
+<img width="914" height="265" alt="3_Captura de pantalla_2026-04-26_12-02-04" src="https://github.com/user-attachments/assets/f5827200-2407-4a25-925c-0911e62188c5" />
+
+Ahora vamos a comprobar que los datos persisten más allá del contenedor para ello, eliminaremos el contenador y crearemos otro que use el mismo volumen para comprobar que la información persiste y la tabla que creamos con el otro contenedor sigue existiendo y tiene el registro que creamos.
+
+Borramos el contenedor
+<img width="1588" height="194" alt="3_1_Captura de pantalla_2026-04-26_16-57-14" src="https://github.com/user-attachments/assets/71ff5eee-3230-48e6-9628-ca45d16f8380" />
+
+Ejecutamos un nuevo contenedor con el mismo volumen
+<img width="1644" height="188" alt="3_Captura de pantalla_2026-04-26_12-13-08" src="https://github.com/user-attachments/assets/d998afd0-4e80-4039-a1b2-36f4ea123e06" />
+
+Ahora comprobamos que existan los datos
+
+<img width="1487" height="346" alt="3_Captura de pantalla_2026-04-26_12-22-53" src="https://github.com/user-attachments/assets/8cf28209-56d1-4740-b036-401bc59899fe" />
+
+
+
+
+
+
+docker run -d --name postgres-mismo-volumen -e POSTGRES_PASSWORD=123 \
+--mount source=postgres-vol,target=/var/lib/postgresql/ postgres
+
+Comprueba que los datos siguen existiendo.
+
 
 
