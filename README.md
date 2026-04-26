@@ -93,6 +93,33 @@ Ahora comprobamos que siguen existiendo los datos
 <img width="1487" height="346" alt="3_Captura de pantalla_2026-04-26_12-22-53" src="https://github.com/user-attachments/assets/8cf28209-56d1-4740-b036-401bc59899fe" />
 
 
+<h3>4. Bind mounts</h3>h3
+
+Ejecuta un contenedor nginx:
+
+    mapea el puerto 80
+    monta el archivo en:
+
+/usr/share/nginx/html/index.html
+
+docker run -d \
+--name hola-docker-web \
+--mount type=bind,source="$(pwd)"/web-content,target=/usr/share/nginx/html/ \
+-p 8080:80 nginx
+
+<img width="1257" height="135" alt="4_Captura de pantalla_2026-04-26_17-36-41" src="https://github.com/user-attachments/assets/634d9a22-1511-4f2d-8864-9110d494e377" />
+
+Creamos un fichero html en el directorio bind
+<img width="738" height="351" alt="4_Captura de pantalla_2026-04-26_17-37-03" src="https://github.com/user-attachments/assets/6ffa25fd-8745-4cd9-add3-73002419feea" />
+
+Vemos que en si accedemos a localhost en el puerto 8080 se muestra el fichero html que se encuentra en el directorio de mi máquina (Host) que está mapeado con el directorio de publicación de nginx
+<img width="875" height="72" alt="4_Captura de pantalla_2026-04-26_17-38-06" src="https://github.com/user-attachments/assets/106f25e6-db6c-48e4-b883-26229a457011" />
+
+Si modificamos el documento en el host se modificará en el contenedor.
+
+<img width="1006" height="124" alt="4_Captura de pantalla_2026-04-26_17-39-58" src="https://github.com/user-attachments/assets/e80975d9-1c12-492b-9632-a17aaaa9f252" />
+
+<img width="825" height="189" alt="4_Captura de pantalla_2026-04-26_17-38-44" src="https://github.com/user-attachments/assets/3b529b11-9dbc-4ac4-93b6-dfc108b7e9d7" />
 
 
 
