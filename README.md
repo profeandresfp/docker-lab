@@ -58,10 +58,6 @@ En nuestro caso
 docker history mi-ubuntu
 
 <h3>Paso 3</h3>
-
-docker run -d  --name postgres-demo -e POSTGRES_PASSWORD=123 -v postgres-vol:/var/lib/postgresql/ postgres
-
-<h3>Paso 3</h3>
 Volúmenes persistentes
 
 Vamos a ejecutar un contenedor de postgres que use un volumen Docker montado en /var/lib/postgresql/data.
@@ -93,19 +89,10 @@ Borramos el contenedor
 Ejecutamos un nuevo contenedor con el mismo volumen
 <img width="1644" height="188" alt="3_Captura de pantalla_2026-04-26_12-13-08" src="https://github.com/user-attachments/assets/d998afd0-4e80-4039-a1b2-36f4ea123e06" />
 
-Ahora comprobamos que existan los datos
-
+Ahora comprobamos que siguen existiendo los datos
 <img width="1487" height="346" alt="3_Captura de pantalla_2026-04-26_12-22-53" src="https://github.com/user-attachments/assets/8cf28209-56d1-4740-b036-401bc59899fe" />
 
 
-
-
-
-
-docker run -d --name postgres-mismo-volumen -e POSTGRES_PASSWORD=123 \
---mount source=postgres-vol,target=/var/lib/postgresql/ postgres
-
-Comprueba que los datos siguen existiendo.
 
 
 
