@@ -122,4 +122,28 @@ Si modificamos el documento en el host se modificará en el contenedor.
 <img width="825" height="189" alt="4_Captura de pantalla_2026-04-26_17-38-44" src="https://github.com/user-attachments/assets/3b529b11-9dbc-4ac4-93b6-dfc108b7e9d7" />
 
 
+<h3>6. Creando redes privadas</h3>
+
+Creamos una red con nombre my-net
+
+docker network create my-net
+Arranca dos contenedores ubuntu en esa red.
+
+docker run -d --name ubuntu-1 --network my-net ubuntu
+docker run -d --name ubuntu-2 --network my-net ubuntu
+
+Accedemos al contenedor e instalamos ping
+
+Desde un contenedor intenta hacer:
+docker exec -it ubuntu-1 bash
+apt-get update && apt-get install -y iputils-ping
+
+Ejecutamos el ping al otro contenedor
+Es posible usar el nombre porque Docker tiene un DNS interno
+ping ubuntu-2 
+
+<h4>Pregunta</h4>
+¿Los contenedores pueden comunicarse entre sí?
+Sí, la forma depende del tipo de red.
+También pueden compartir datos mediante volúmenes compartidos.
 
