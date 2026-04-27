@@ -121,26 +121,34 @@ Si modificamos el documento en el host se modificará en el contenedor.
 
 <img width="825" height="189" alt="4_Captura de pantalla_2026-04-26_17-38-44" src="https://github.com/user-attachments/assets/3b529b11-9dbc-4ac4-93b6-dfc108b7e9d7" />
 
-
 <h3>6. Creando redes privadas</h3>
 
 Creamos una red con nombre my-net
-
 docker network create my-net
+<img width="1074" height="65" alt="6_Captura de pantalla_2026-04-27_21-36-02" src="https://github.com/user-attachments/assets/a855c7c3-2b2e-4cda-9c69-0163ba79bb67" />
+
+<br>
+
 Arranca dos contenedores ubuntu en esa red.
+Lo arrancamos de forma interactiva para se queden en estado UP
+docker run -d -it  --name ubuntu-1 --network my-net ubuntu
+docker run -d -it  --name ubuntu-2 --network my-net ubuntu
 
-docker run -d --name ubuntu-1 --network my-net ubuntu
-docker run -d --name ubuntu-2 --network my-net ubuntu
+<img width="1301" height="114" alt="6_Captura de pantalla_2026-04-27_21-36-43" src="https://github.com/user-attachments/assets/417f2db4-6ca0-46e1-9832-f9af8d8a0e56" />
 
+Instalamos la herramienta ping
 Accedemos al contenedor e instalamos ping
-
-Desde un contenedor intenta hacer:
 docker exec -it ubuntu-1 bash
 apt-get update && apt-get install -y iputils-ping
+
+<img width="1222" height="458" alt="6_Captura de pantalla_2026-04-27_21-38-43" src="https://github.com/user-attachments/assets/d910adf2-32ac-4852-8c01-d045a7d36f9d" />
+
 
 Ejecutamos el ping al otro contenedor
 Es posible usar el nombre porque Docker tiene un DNS interno
 ping ubuntu-2 
+<img width="1084" height="217" alt="6_Captura de pantalla_2026-04-27_21-39-18" src="https://github.com/user-attachments/assets/f75df589-bbe9-44de-86e3-858ce6076623" />
+
 
 <h4>Pregunta</h4>
 ¿Los contenedores pueden comunicarse entre sí?
