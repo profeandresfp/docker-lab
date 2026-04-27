@@ -158,3 +158,49 @@ ping ubuntu-2
 Sí, la forma depende del tipo de red.
 También pueden compartir datos mediante volúmenes compartidos.
 
+<h3>9. Docker Compose --- Compartiendo volúmenes</h3>
+
+Crea un fichero:
+docker-compose.yml
+
+Con dos servicios.
+writer
+Debe:
+    montar un volumen en /app/logs
+    escribir un timestamp cada 30 segundos
+
+reader
+Debe:
+    montar el volumen en modo solo lectura
+    mostrar el contenido en consola
+
+Contenido del fichero docker-compose.yml
+
+services:
+  writer:
+    image: alpine  #distribución linux ligera
+    container_name: service-writer #nombre del servicio
+    volumes:
+      - log-data:/app/logs  #nombre del volumen y ruta
+    # Comando: ejecuta un bucle infinito que escribe la fecha en el archivo
+    command: >
+      sh -c "while true; do 
+      date >> /app/logs/timestamp.log; 
+      echo 'Timestamp escrito'; 
+      sleep 30; 
+      done"
+
+  reader:
+    image: alpine
+    container_name: service-reader
+    volumes:
+      - log-data:/app/logs:ro  # :ro significa Read-Only 
+    depends_on:  # indica que este servicio depende de writer, es decir reader espera a que writer esté arrancado
+      - writer
+    # Comando: sigue el archivo en tiempo real
+    command: sh -c "tail -f /app/logs/timestamp.log"
+
+volumes:        #definiciónd del volumen utilizado
+  log-data:
+    driver: local
+
