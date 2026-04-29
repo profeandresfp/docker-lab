@@ -173,34 +173,34 @@ Debe:<br>
     mostrar el contenido en consola<br>
 
 Veamos el Contenido del fichero docker-compose.yml que necesitamos
+<br>
+services:<br>
+  writer:<br>
+    image: alpine  #distribución linux ligera<br>
+    container_name: service-writer #nombre del servicio<br>
+    volumes:<br>
+      - log-data:/app/logs  #nombre del volumen y ruta<br>
+    # Comando: ejecuta un bucle infinito que escribe la fecha en el archivo<br>
+    command: ><br>
+      sh -c "while true; do <br>
+      date >> /app/logs/timestamp.log; <br>
+      echo 'Timestamp escrito'; <br>
+      sleep 30; <br>
+      done"<br>
 
-services:
-  writer:
-    image: alpine  #distribución linux ligera
-    container_name: service-writer #nombre del servicio
-    volumes:
-      - log-data:/app/logs  #nombre del volumen y ruta
-    # Comando: ejecuta un bucle infinito que escribe la fecha en el archivo
-    command: >
-      sh -c "while true; do 
-      date >> /app/logs/timestamp.log; 
-      echo 'Timestamp escrito'; 
-      sleep 30; 
-      done"
+  reader:<br>
+    image: alpine<br>
+    container_name: service-reader<br>
+    volumes:<br>
+      - log-data:/app/logs:ro  # :ro significa Read-Only <br>
+    depends_on:  # indica que este servicio depende de writer, es decir reader espera a que writer esté arrancado<br>
+      - writer<br>
+    # Comando: sigue el archivo en tiempo real<br>
+    command: sh -c "tail -f /app/logs/timestamp.log"<br>
 
-  reader:
-    image: alpine
-    container_name: service-reader
-    volumes:
-      - log-data:/app/logs:ro  # :ro significa Read-Only 
-    depends_on:  # indica que este servicio depende de writer, es decir reader espera a que writer esté arrancado
-      - writer
-    # Comando: sigue el archivo en tiempo real
-    command: sh -c "tail -f /app/logs/timestamp.log"
-
-volumes:        #definiciónd del volumen utilizado
-  log-data:
-    driver: local
+volumes:        #definiciónd del volumen utilizado<br>
+  log-data:<br>
+    driver: local<br>
 
 Seleccionamos la imagen de la distribución linux alpine que es muy ligera para cada servicio.
 Cada uno de los servicios referencia al volumen en /app/logs/ 
