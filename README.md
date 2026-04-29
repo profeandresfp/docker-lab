@@ -160,21 +160,19 @@ También pueden compartir datos mediante volúmenes compartidos.
 
 <h3>9. Docker Compose --- Compartiendo volúmenes</h3>
 
-Crea un fichero:
-docker-compose.yml
-
-Con dos servicios.
-writer
+Crea un fichero: docker-compose.yml
+Con dos servicios.<br>
+writer<br>
 Debe:
-    montar un volumen en /app/logs
-    escribir un timestamp cada 30 segundos
+    montar un volumen en /app/logs<br>
+    escribir un timestamp cada 30 segundos<br>
 
-reader
-Debe:
-    montar el volumen en modo solo lectura
-    mostrar el contenido en consola
+reader<br>
+Debe:<br>
+    montar el volumen en modo solo lectura<br>
+    mostrar el contenido en consola<br>
 
-Contenido del fichero docker-compose.yml
+Veamos el Contenido del fichero docker-compose.yml que necesitamos
 
 services:
   writer:
@@ -203,4 +201,33 @@ services:
 volumes:        #definiciónd del volumen utilizado
   log-data:
     driver: local
+
+Seleccionamos la imagen de la distribución linux alpine que es muy ligera para cada servicio.
+Cada uno de los servicios referencia al volumen en /app/logs/ 
+El servicio writer escribe en el volumen y el servicio reader lee del mismo volumen en el que escribe el servicio writer.
+El servicio reader tiene permiso de sólo lectura sobre el volumen.
+Se indica aque el servicio reader depende de que se haya cargado el servicio writer.
+Se define el volumnen. 
+
+Levantamos los servicios con el argumento -d para que se queden ejectuando en segundo plano.
+docker compose up -d
+<br>
+Comprobamos si se escribe
+Miramos el log en el que writer tiene que escribir la hora cada 30 segundos<br>
+
+docker compose logs -f reader
+
+<img width="1461" height="489" alt="9_Captura de pantalla_2026-04-29_16-18-18" src="https://github.com/user-attachments/assets/9c272fa3-e517-40c3-b87f-7a3e38bf3a81" />
+
+Comprobamos que el servicio reader tiene el volumen en solo lectura
+
+<img width="1361" height="65" alt="9_Captura de pantalla_2026-04-29_16-19-35" src="https://github.com/user-attachments/assets/b749dede-b728-4f3d-bdfb-8579b9da896f" />
+
+Vemos que al ejecutar el comando docker exec -it service-reader touch /app/logs/prueba.txt obtenemos un mensaje de error. Read-only file system.
+
+
+
+
+
+
 
